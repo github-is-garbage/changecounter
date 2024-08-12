@@ -37,6 +37,8 @@ function AddCounter(Label, Worth)
 	const Container = document.createElement("tr")
 	const LabelContainer = document.createElement("td")
 	const InputContainer = document.createElement("td")
+	const PlusContainer = document.createElement("td")
+	const MinusContainer = document.createElement("td")
 	const ResetContainer = document.createElement("td")
 
 	const Input = document.createElement("input")
@@ -59,6 +61,50 @@ function AddCounter(Label, Worth)
 	LabelElement.setAttribute("for", Input.id)
 	LabelElement.innerHTML = Label
 
+	const Plus = document.createElement("button")
+	Plus.innerHTML = "+"
+	Plus.m_Input = Input
+
+	Plus.onclick = (Event) =>
+	{
+		const Plus = Event.target
+		if (!Plus) return
+
+		const Input = Plus.m_Input
+		if (!Input) return
+
+		var NewValue = parseFloat(Input.value) + 1
+
+		if (NewValue > parseFloat(Input.getAttribute("max")))
+			NewValue = parseFloat(Input.getAttribute("max"))
+
+		Input.value = NewValue
+
+		UpdateTotal()
+	}
+
+	const Minus = document.createElement("button")
+	Minus.innerHTML = "-"
+	Minus.m_Input = Input
+
+	Minus.onclick = (Event) =>
+	{
+		const Minus = Event.target
+		if (!Minus) return
+
+		const Input = Minus.m_Input
+		if (!Input) return
+
+		var NewValue = parseFloat(Input.value) - 1
+
+		if (NewValue < parseFloat(Input.getAttribute("min")))
+			NewValue = parseFloat(Input.getAttribute("min"))
+
+		Input.value = NewValue
+
+		UpdateTotal()
+	}
+
 	const Reset = document.createElement("button")
 	Reset.classList.add("reset")
 	Reset.innerHTML = "Reset"
@@ -78,10 +124,14 @@ function AddCounter(Label, Worth)
 
 	LabelContainer.appendChild(LabelElement)
 	InputContainer.appendChild(Input)
+	PlusContainer.appendChild(Plus)
+	MinusContainer.appendChild(Minus)
 	ResetContainer.appendChild(Reset)
 
 	Container.appendChild(LabelContainer)
 	Container.appendChild(InputContainer)
+	Container.appendChild(PlusContainer)
+	Container.appendChild(MinusContainer)
 	Container.appendChild(ResetContainer)
 
 	Display.appendChild(Container)
